@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B2545">
+<title>Star LPG Karachi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --navy:#0B2545;--navy-2:#13315C;--flame:#F26B1D;--flame-d:#D9560C;--sun:#FFB627;
+  --ink:#14213D;--muted:#5B6476;--line:#E3E7EE;--bg:#F7F8FB;--card:#fff;
+  --green:#1FAF55;--green-d:#178A43;--red:#C0362C;--amber:#E8A317;--r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:16px;padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+h1,h2,h3{line-height:1.2}
+.hidden{display:none!important}
+
+/* header */
+header{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;padding-top:env(safe-area-inset-top)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.12rem}
+.brand svg{width:34px;height:34px}
+.brand b{color:var(--flame)}
+.sync{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px rgba(255,255,255,.15);margin-left:4px}
+.sync.ok{background:#2EE07A}
+.sync.err{background:#FF5A4E}
+.hbtn{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:10px;padding:8px 12px;font:inherit;font-weight:700;font-size:.9rem;cursor:pointer}
+
+/* hero */
+.hero{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;padding:22px 0 26px}
+.hero h1{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.hero p{color:#C9D4E6}
+.quick{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;border-radius:12px;padding:13px 18px;font-size:1rem;border:2px solid transparent;cursor:pointer;font-family:inherit}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-wa{background:var(--green);color:#fff}
+.btn-flame{background:var(--flame);color:#fff}
+.btn-ghost{background:#fff;color:var(--navy);border-color:var(--line)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-sm{padding:8px 12px;font-size:.88rem;border-radius:10px}
+.btn-block{width:100%}
+
+/* cards & forms */
+section{padding:22px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card h2{font-size:1.25rem;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.93rem;margin-bottom:14px}
+.field{margin-bottom:14px}
+label{display:block;font-weight:700;font-size:.92rem;margin-bottom:6px}
+input,select,textarea{width:100%;font:inherit;padding:12px 13px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--flame);box-shadow:0 0 0 3px rgba(242,107,29,.15)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{margin:0;padding:10px 14px;border:1.5px solid var(--line);border-radius:10px;font-weight:600;cursor:pointer;background:#fff}
+.seg input:checked+label{border-color:var(--flame);background:#FFF1E8;color:var(--flame-d)}
+.err{color:var(--red);font-size:.85rem;margin-top:4px;display:none}
+.gps-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.gps-msg{font-size:.88rem;color:var(--muted)}
+.gps-msg.ok{color:var(--green-d);font-weight:600}
+.rate{font-size:.88rem;color:var(--flame-d);font-weight:700;margin-top:6px;min-height:1.2em}
+.notice{background:#FFF8E6;border:1px solid #FBE3A6;border-radius:12px;padding:12px 14px;font-size:.94rem;color:#6B5313;margin-bottom:14px}
+.done{text-align:center}
+.done .big{font-size:2.4rem}
+.done .oid{font-size:1.4rem;font-weight:800;color:var(--navy);letter-spacing:.04em;margin:6px 0}
+
+footer{color:var(--muted);text-align:center;font-size:.85rem;padding:20px 0 30px}
+footer a{color:var(--muted)}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(11,37,69,.55);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
+.modal .card{width:100%;max-width:340px;margin:0}
+.pin{font-size:1.6rem;letter-spacing:.5em;text-align:center}
+
+/* staff */
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar select{width:auto;flex:1;min-width:140px;padding:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.4rem;color:var(--navy)}
+.stat span{font-size:.75rem;color:var(--muted)}
+.order{border-left:5px solid var(--line)}
+.order.s-new{border-left-color:var(--flame)}
+.order.s-confirmed{border-left-color:var(--amber)}
+.order.s-out{border-left-color:#2F6FD6}
+.order.s-delivered{border-left-color:var(--green)}
+.order.s-cancelled{border-left-color:#9AA3B2;opacity:.75}
+.ohead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ohead h3{font-size:1.05rem}
+.badge{font-size:.72rem;font-weight:800;padding:4px 8px;border-radius:6px;background:#EEF1F6;color:var(--navy-2);white-space:nowrap;text-transform:uppercase}
+.meta{font-size:.9rem;color:var(--muted);margin-top:6px}
+.meta div{margin:2px 0}
+.oact{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.empty{text-align:center;color:var(--muted);padding:30px 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;z-index:90;max-width:90%;text-align:center}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#13315C"/><path d="M20 7c1.4 5 7 6.8 7 13.6a7 7 0 0 1-14 0c0-3.2 1.6-5.2 3.4-6.4.3 2.6 1.4 3.9 2.7 4.5C18.6 15.5 20 11.8 20 7z" fill="#F26B1D"/><path d="M20 19c.6 2 3 2.8 3 5.4a3 3 0 0 1-6 0c0-1.4.7-2.2 1.5-2.8.2 1 .6 1.6 1.2 1.9-.2-1.7.3-3.2.3-4.5z" fill="#FFB627"/></svg>
+    <span>Star <b>LPG</b> Karachi</span>
+    <span id="syncDot" class="sync" title="Connecting…"></span>
+  </div>
+  <button id="staffBtn" class="hbtn">Staff</button>
+</div></header>
+
+<!-- ================= CUSTOMER VIEW ================= -->
+<div id="customerView">
+  <div class="hero"><div class="wrap">
+    <h1>Gas khatam? Order karein.</h1>
+    <p>LPG cylinder doorstep delivery — homes, restaurants &amp; industry across Karachi.</p>
+    <div class="quick">
+      <a class="btn btn-wa" href="https://wa.me/923008599961?text=Assalam%20o%20Alaikum%20Star%20LPG%2C%20mujhe%20gas%20cylinder%20order%20karna%20hai.">WhatsApp</a>
+      <a class="btn btn-ghost" href="tel:+923008599961">Call 0300-8599961</a>
+    </div>
+  </div></div>
+
+  <section><div class="wrap">
+    <div id="noticeBox" class="notice hidden"></div>
+
+    <form id="orderForm" class="card" novalidate>
+      <h2>Order a cylinder</h2>
+      <p class="sub">Form bharein — hum aaj ka rate aur delivery time confirm karenge.</p>
+
+      <div class="field"><label>Customer type</label>
+        <div class="seg">
+          <input type="radio" name="ctype" id="ct1" value="Home" checked><label for="ct1">Home</label>
+          <input type="radio" name="ctype" id="ct2" value="Commercial"><label for="ct2">Commercial</label>
+        </div></div>
+
+      <div class="row2">
+        <div class="field"><label for="name">Naam / Name</label><input id="name" name="name" autocomplete="name"><div class="err" id="e_name">Naam likhein</div></div>
+        <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" inputmode="tel" placeholder="03XX-XXXXXXX" autocomplete="tel"><div class="err" id="e_phone">Sahi phone number likhein</div></div>
+      </div>
+
+      <div class="field hidden" id="bizRow"><label for="biz">Business name</label><input id="biz" name="biz" placeholder="Restaurant / bakery / factory"></div>
+
+      <div class="row2">
+        <div class="field"><label for="size">Cylinder size</label>
+          <select id="size" name="size">
+            <option value="5 KG">5 KG</option>
+            <option value="10 KG">10 KG</option>
+            <option value="13 KG" selected>13 KG</option>
+            <option value="45.4 KG">45.4 KG (Commercial)</option>
+          </select>
+          <div class="rate" id="rateHint"></div></div>
+        <div class="field"><label for="qty">Quantity</label><input id="qty" name="qty" type="number" min="1" max="50" value="1" inputmode="numeric"></div>
+      </div>
+
+      <div class="field"><label>Order type</label>
+        <div class="seg">
+          <input type="radio" name="otype" id="ot1" value="Refill" checked><label for="ot1">Refill</label>
+          <input type="radio" name="otype" id="ot2" value="New cylinder"><label for="ot2">New cylinder</label>
+          <input type="checkbox" name="reg" id="reg" value="yes"><label for="reg">+ Regulator</label>
+        </div></div>
+
+      <div class="row2">
+        <div class="field"><label for="branch">Nazdeek branch</label>
+          <select id="branch" name="branch">
+            <option>Dalmia Road</option>
+            <option>Saadi Town</option>
+            <option>SITE / Orangi</option>
+          </select></div>
+        <div class="field"><label for="area">Area</label><input id="area" name="area" placeholder="e.g. Gulshan Block 5"></div>
+      </div>
+
+      <div class="field"><label for="address">Poora address</label><textarea id="address" name="address" rows="2" placeholder="House / shop no., street, landmark"></textarea><div class="err" id="e_address">Address likhein</div></div>
+
+      <div class="field"><label>Location pin (optional)</label>
+        <div class="gps-row">
+          <button type="button" id="gpsBtn" class="btn btn-ghost btn-sm">📍 Use my current location</button>
+          <span id="gpsMsg" class="gps-msg">Rider ko seedha aap tak pohanchne mein madad milti hai.</span>
+        </div></div>
+
+      <div class="field"><label for="notes">Note (optional)</label><input id="notes" name="notes" placeholder="Delivery time, floor, etc."></div>
+
+      <button id="submitBtn" type="submit" class="btn btn-flame btn-block">Place order</button>
+      <p class="sub" style="margin:10px 0 0;font-size:.82rem">Aapka naam, phone aur address sirf delivery ke liye use hota hai. <a href="https://wa.me/923008599961">Questions?</a></p>
+    </form>
+
+    <div id="doneCard" class="card done hidden">
+      <div class="big">✅</div>
+      <h2>Order mil gaya!</h2>
+      <div class="oid" id="doneId"></div>
+      <p class="sub">Star LPG jaldi aap ko call karke rate aur delivery time confirm karega.</p>
+      <div class="oact" style="justify-content:center">
+        <a id="doneWa" class="btn btn-wa" href="#">Send on WhatsApp too</a>
+        <button id="newOrderBtn" class="btn btn-ghost">New order</button>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= STAFF VIEW ================= -->
+<div id="staffView" class="hidden">
+  <section><div class="wrap">
+    <div class="ohead" style="margin-bottom:12px">
+      <h2 style="font-size:1.35rem">Staff Portal</h2>
+      <button id="logoutBtn" class="btn btn-ghost btn-sm">Lock</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="stNew">0</b><span>New</span></div>
+      <div class="stat"><b id="stConf">0</b><span>Confirmed</span></div>
+      <div class="stat"><b id="stOut">0</b><span>Out</span></div>
+      <div class="stat"><b id="stToday">0</b><span>Delivered today</span></div>
+    </div>
+
+    <div class="toolbar">
+      <select id="fBranch">
+        <option value="">All branches</option>
+        <option>Dalmia Road</option>
+        <option>Saadi Town</option>
+        <option>SITE / Orangi</option>
+      </select>
+      <select id="fStatus">
+        <option value="active">Active orders</option>
+        <option value="">All orders</option>
+        <option value="new">New</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="out">Out for delivery</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <button id="ratesToggle" class="btn btn-ghost btn-sm">Today's rates</button>
+    </div>
+
+    <form id="ratesForm" class="card hidden">
+      <h2>Today's rates (Rs.)</h2>
+      <p class="sub">Customers see these on the order form. Leave blank to hide.</p>
+      <div class="row2">
+        <div class="field"><label for="r5">5 KG</label><input id="r5" inputmode="numeric"></div>
+        <div class="field"><label for="r10">10 KG</label><input id="r10" inputmode="numeric"></div>
+        <div class="field"><label for="r13">13 KG</label><input id="r13" inputmode="numeric"></div>
+        <div class="field"><label for="r45">45.4 KG</label><input id="r45" inputmode="numeric"></div>
+      </div>
+      <div class="field"><label for="notice">Notice for customers (optional)</label><input id="notice" placeholder="e.g. Delivery 9am – 10pm"></div>
+      <button type="submit" class="btn btn-navy btn-block">Save rates</button>
+    </form>
+
+    <div id="orderList"></div>
+  </div></section>
+</div>
+
+<footer>
+  © Star LPG · 177/3 Main National Stadium Road, Dalmia, Karachi · 0300-8599961<br>
+  <a href="https://wa.me/923008599961">WhatsApp</a> · <a href="privacy-policy.html">Privacy Policy</a>
+</footer>
+
+<!-- PIN modal -->
+<div id="pinModal" class="modal hidden">
+  <form id="pinForm" class="card">
+    <h2>Staff login</h2>
+    <p class="sub">Enter branch PIN</p>
+    <div class="field"><input id="pinInput" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+    <div class="err" id="pinErr" style="margin:-6px 0 10px">Wrong PIN</div>
+    <div class="oact" style="margin-top:0">
+      <button type="button" id="pinCancel" class="btn btn-ghost" style="flex:1">Cancel</button>
+      <button type="submit" class="btn btn-navy" style="flex:1">Open</button>
+    </div>
+  </form>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  initializeFirestore, persistentLocalCache, collection, doc, addDoc, updateDoc, setDoc,
+  onSnapshot, query, orderBy, limit, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ====== CONFIG ====== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyC6qaa58nu-xDdpF1RcRm98z9DE41chDSI",
+  authDomain: "star-lpg-karachi.firebaseapp.com",
+  projectId: "star-lpg-karachi",
+  storageBucket: "star-lpg-karachi.firebasestorage.app",
+  messagingSenderId: "328210989772",
+  appId: "1:328210989772:web:9f55d41229c2e7f44f7869"
+};
+const STAFF_PIN = "7860";            // <-- change to your private 4-digit branch PIN
+const WA_NUMBER = "923008599961";
+/* ==================== */
+
+const $ = id => document.getElementById(id);
+const app = initializeApp(FIREBASE_CONFIG);
+let db;
+try { db = initializeFirestore(app, { localCache: persistentLocalCache() }); }
+catch (e) { db = initializeFirestore(app, {}); }
+
+function toast(msg){
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
+}
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- Sync dot + public settings ---------- */
+const dot = $('syncDot');
+function setDot(state, title){ dot.className = 'sync' + (state ? ' ' + state : ''); dot.title = title; }
+let rates = {};
+onSnapshot(doc(db, 'settings', 'public'), { includeMetadataChanges: true }, snap => {
+  if (snap.metadata.fromCache) setDot('', 'Offline — orders will sync when internet returns');
+  else setDot('ok', 'Live — synced with Star LPG');
+  const d = snap.exists() ? snap.data() : {};
+  rates = d.rates || {};
+  const nb = $('noticeBox');
+  if (d.notice) { nb.textContent = d.notice; nb.classList.remove('hidden'); } else nb.classList.add('hidden');
+  showRate(); fillRatesForm(d);
+}, err => { console.error(err); setDot('err', 'Sync error: ' + err.code); });
+window.addEventListener('offline', () => setDot('', 'Offline — orders will sync when internet returns'));
+
+const rateKey = { '5 KG':'r5', '10 KG':'r10', '13 KG':'r13', '45.4 KG':'r45' };
+function showRate(){
+  const r = rates[rateKey[$('size').value]];
+  $('rateHint').textContent = r ? `Today: Rs. ${Number(r).toLocaleString('en-PK')} per cylinder` : '';
+}
+
+/* ---------- Customer order form ---------- */
+const f = $('orderForm');
+const val = n => { const el = f.elements[n]; if (!el) return ''; if (el.type === 'checkbox') return el.checked ? el.value : '';
+  if (el instanceof RadioNodeList) return el.value; return (el.value || '').trim(); };
+f.addEventListener('change', () => { $('bizRow').classList.toggle('hidden', val('ctype') !== 'Commercial'); showRate(); });
+
+let gps = null;
+$('gpsBtn').addEventListener('click', () => {
+  const m = $('gpsMsg');
+  if (!navigator.geolocation) { m.textContent = 'Location not supported on this device.'; return; }
+  m.className = 'gps-msg'; m.textContent = 'Getting location…';
+  navigator.geolocation.getCurrentPosition(p => {
+    gps = { lat: +p.coords.latitude.toFixed(6), lng: +p.coords.longitude.toFixed(6), accuracy: Math.round(p.coords.accuracy) };
+    m.className = 'gps-msg ok'; m.textContent = `📍 Location added (±${gps.accuracy} m)`;
+  }, e => {
+    gps = null; m.className = 'gps-msg';
+    m.textContent = e.code === 1 ? 'Location permission denied — address kaafi hai.' : 'Location nahi mili — address kaafi hai.';
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+});
+
+function waText(o, id){
+  const L = ['Assalam o Alaikum Star LPG, mera order:', `Order #: ${id}`, `Naam: ${o.name}`, `Phone: ${o.phone}`];
+  if (o.business) L.push(`Business: ${o.business}`);
+  L.push(`Cylinder: ${o.size} x ${o.qty} (${o.orderType}${o.regulator ? ' + regulator' : ''})`);
+  L.push(`Area: ${o.area || '-'}`, `Address: ${o.address}`, `Branch: ${o.branch}`);
+  if (o.location) L.push(`Map: https://maps.google.com/?q=${o.location.lat},${o.location.lng}`);
+  if (o.notes) L.push(`Note: ${o.notes}`);
+  return L.join('\n');
+}
+
+f.addEventListener('submit', async e => {
+  e.preventDefault();
+  let ok = true;
+  [['name', v => v.length >= 2], ['phone', v => v.replace(/\D/g,'').length >= 10], ['address', v => v.length >= 5]].forEach(([k, test]) => {
+    const bad = !test(val(k)); $('e_' + k).style.display = bad ? 'block' : 'none'; if (bad) ok = false;
+  });
+  if (!ok) { f.querySelector('.err[style*="block"]')?.scrollIntoView({ behavior:'smooth', block:'center' }); return; }
+
+  const order = {
+    customerType: val('ctype'), name: val('name'), phone: val('phone'),
+    business: val('ctype') === 'Commercial' ? val('biz') : '',
+    size: val('size'), qty: Math.max(1, parseInt(val('qty')) || 1),
+    orderType: val('otype'), regulator: val('reg') === 'yes',
+    branch: val('branch'), area: val('area'), address: val('address'), notes: val('notes'),
+    location: gps, status: 'new', source: 'app', createdAt: serverTimestamp()
+  };
+  const btn = $('submitBtn'); btn.disabled = true; btn.textContent = 'Placing order…';
+  try {
+    const ref = doc(collection(db, 'orders'));      // id is known immediately, works offline
+    const write = setDoc(ref, order);
+    const shortId = 'SL-' + ref.id.slice(0, 6).toUpperCase();
+    await Promise.race([write, new Promise(r => setTimeout(r, 4000))]);  // don't hang when offline
+    $('doneId').textContent = shortId;
+    $('doneWa').href = `https://wa.me/${WA_NUMBER}?text=` + encodeURIComponent(waText(order, shortId));
+    f.classList.add('hidden'); $('doneCard').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    write.catch(err => toast('Order sync failed: ' + err.code + ' — please WhatsApp us'));
+  } catch (err) {
+    console.error(err); toast('Order failed — please WhatsApp us');
+  } finally { btn.disabled = false; btn.textContent = 'Place order'; }
+});
+$('newOrderBtn').addEventListener('click', () => {
+  f.reset(); gps = null; $('gpsMsg').className = 'gps-msg'; $('gpsMsg').textContent = 'Rider ko seedha aap tak pohanchne mein madad milti hai.';
+  $('bizRow').classList.add('hidden'); showRate();
+  $('doneCard').classList.add('hidden'); f.classList.remove('hidden');
+});
+
+/* ---------- Staff login ---------- */
+const store = { get(k){ try { return sessionStorage.getItem(k); } catch(e){ return null; } },
+                set(k,v){ try { sessionStorage.setItem(k,v); } catch(e){} },
+                del(k){ try { sessionStorage.removeItem(k); } catch(e){} } };
+$('staffBtn').addEventListener('click', () => {
+  if (!$('staffView').classList.contains('hidden')) return closeStaff();
+  if (store.get('slStaff') === '1') return openStaff();
+  $('pinErr').style.display = 'none'; $('pinInput').value = '';
+  $('pinModal').classList.remove('hidden'); setTimeout(() => $('pinInput').focus(), 50);
+});
+$('pinCancel').addEventListener('click', () => $('pinModal').classList.add('hidden'));
+$('pinForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if ($('pinInput').value === STAFF_PIN) { store.set('slStaff', '1'); $('pinModal').classList.add('hidden'); openStaff(); }
+  else { $('pinErr').style.display = 'block'; $('pinInput').value = ''; }
+});
+$('logoutBtn').addEventListener('click', () => { store.del('slStaff'); closeStaff(); });
+
+let unsubOrders = null, allOrders = [];
+function openStaff(){
+  $('customerView').classList.add('hidden'); $('staffView').classList.remove('hidden');
+  $('staffBtn').textContent = 'Customer';
+  if (!unsubOrders) {
+    const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'), limit(300));
+    unsubOrders = onSnapshot(q, snap => {
+      allOrders = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: 'estimate' }) }));
+      renderOrders();
+    }, err => { console.error(err); $('orderList').innerHTML = `<div class="empty">Could not load orders (${esc(err.code)})</div>`; });
+  }
+  window.scrollTo(0, 0);
+}
+function closeStaff(){
+  $('staffView').classList.add('hidden'); $('customerView').classList.remove('hidden');
+  $('staffBtn').textContent = 'Staff';
+  if (unsubOrders) { unsubOrders(); unsubOrders = null; }
+}
+
+/* ---------- Staff orders ---------- */
+const STATUS = { new:'New', confirmed:'Confirmed', out:'Out for delivery', delivered:'Delivered', cancelled:'Cancelled' };
+const NEXT = { new:['confirmed','cancelled'], confirmed:['out','cancelled'], out:['delivered','cancelled'], delivered:[], cancelled:['new'] };
+const NEXT_LABEL = { confirmed:'✔ Confirm', out:'🚚 Out for delivery', delivered:'✅ Delivered', cancelled:'✖ Cancel', new:'↺ Reopen' };
+$('fBranch').addEventListener('change', renderOrders);
+$('fStatus').addEventListener('change', renderOrders);
+
+function fmtTime(ts){
+  const d = ts?.toDate ? ts.toDate() : null; if (!d) return '';
+  return d.toLocaleString('en-PK', { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' });
+}
+function renderOrders(){
+  const br = $('fBranch').value, st = $('fStatus').value;
+  const inBranch = allOrders.filter(o => !br || o.branch === br);
+  const today = new Date().toDateString();
+  $('stNew').textContent = inBranch.filter(o => o.status === 'new').length;
+  $('stConf').textContent = inBranch.filter(o => o.status === 'confirmed').length;
+  $('stOut').textContent = inBranch.filter(o => o.status === 'out').length;
+  $('stToday').textContent = inBranch.filter(o => o.status === 'delivered' && o.updatedAt?.toDate && o.updatedAt.toDate().toDateString() === today).length;
+
+  const list = inBranch.filter(o => st === '' ? true : st === 'active' ? ['new','confirmed','out'].includes(o.status) : o.status === st);
+  if (!list.length) { $('orderList').innerHTML = '<div class="empty">No orders here yet.</div>'; return; }
+  $('orderList').innerHTML = list.map(o => {
+    const sid = 'SL-' + o.id.slice(0, 6).toUpperCase();
+    const tel = String(o.phone || '').replace(/[^\d+]/g, '');
+    const wa = tel.replace(/^\+/, '').replace(/^0/, '92');
+    const map = o.location ? `https://maps.google.com/?q=${o.location.lat},${o.location.lng}` : '';
+    const acts = (NEXT[o.status] || []).map(n =>
+      `<button class="btn ${n==='cancelled'?'btn-ghost':'btn-navy'} btn-sm" data-id="${o.id}" data-to="${n}">${NEXT_LABEL[n]}</button>`).join('');
+    return `<div class="card order s-${esc(o.status)}">
+      <div class="ohead"><h3>${esc(o.size)} × ${esc(o.qty)} — ${esc(o.name)}</h3><span class="badge">${esc(STATUS[o.status] || o.status)}</span></div>
+      <div class="meta">
+        <div><b>${sid}</b> · ${esc(fmtTime(o.createdAt))} · ${esc(o.branch)}</div>
+        <div>${esc(o.orderType)}${o.regulator ? ' + regulator' : ''} · ${esc(o.customerType)}${o.business ? ' · ' + esc(o.business) : ''}</div>
+        <div>📞 ${esc(o.phone)}</div>
+        <div>🏠 ${esc(o.address)}${o.area ? ', ' + esc(o.area) : ''}</div>
+        ${o.notes ? `<div>📝 ${esc(o.notes)}</div>` : ''}
+      </div>
+      <div class="oact">
+        <a class="btn btn-ghost btn-sm" href="tel:${esc(tel)}">Call</a>
+        <a class="btn btn-wa btn-sm" href="https://wa.me/${esc(wa)}">WhatsApp</a>
+        ${map ? `<a class="btn btn-ghost btn-sm" href="${map}" target="_blank" rel="noopener">📍 Map</a>` : ''}
+        ${acts}
+      </div></div>`;
+  }).join('');
+}
+$('orderList').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-to]'); if (!b) return;
+  b.disabled = true;
+  try { await updateDoc(doc(db, 'orders', b.dataset.id), { status: b.dataset.to, updatedAt: serverTimestamp() }); }
+  catch (err) { console.error(err); toast('Update failed: ' + err.code); b.disabled = false; }
+});
+
+/* ---------- Staff: today's rates ---------- */
+$('ratesToggle').addEventListener('click', () => $('ratesForm').classList.toggle('hidden'));
+function fillRatesForm(d){
+  if (document.activeElement && $('ratesForm').contains(document.activeElement)) return;
+  const r = d.rates || {};
+  ['r5','r10','r13','r45'].forEach(k => $(k).value = r[k] ?? '');
+  $('notice').value = d.notice || '';
+}
+$('ratesForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const r = {}; ['r5','r10','r13','r45'].forEach(k => { const v = parseInt($(k).value.replace(/\D/g,'')); if (v) r[k] = v; });
+  try { await setDoc(doc(db, 'settings', 'public'), { rates: r, notice: $('notice').value.trim(), updatedAt: serverTimestamp() }, { merge: true });
+        toast('Rates saved'); $('ratesForm').classList.add('hidden'); }
+  catch (err) { console.error(err); toast('Save failed: ' + err.code); }
+});
+</script>
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+</script>
+</body>
+</html>
