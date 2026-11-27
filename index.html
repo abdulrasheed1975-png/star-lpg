@@ -59,8 +59,8 @@ input,select,textarea{width:100%;font:inherit;padding:12px 13px;border:1.5px sol
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--flame);box-shadow:0 0 0 3px rgba(242,107,29,.15)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:520px){.row2{grid-template-columns:1fr}}
-.seg{display:flex;flex-wrap:wrap;gap:8px}
-.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.seg input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;left:0;top:0}
 .seg label{margin:0;padding:10px 14px;border:1.5px solid var(--line);border-radius:10px;font-weight:600;cursor:pointer;background:#fff}
 .seg input:checked+label{border-color:var(--flame);background:#FFF1E8;color:var(--flame-d)}
 .err{color:var(--red);font-size:.85rem;margin-top:4px;display:none}
@@ -288,7 +288,7 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "328210989772",
   appId: "1:328210989772:web:9f55d41229c2e7f44f7869"
 };
-const STAFF_PIN = "7860";            // <-- change to your private 4-digit branch PIN
+const STAFF_PIN_HASH = "51c09a40a6a00a7f1034e3a37165bded735b75db9d0dc05a0353de31eb89e505";  // SHA-256 of "star-lpg-karachi:" + PIN
 const WA_NUMBER = "923008599961";
 /* ==================== */
 
@@ -403,9 +403,13 @@ $('staffBtn').addEventListener('click', () => {
   $('pinModal').classList.remove('hidden'); setTimeout(() => $('pinInput').focus(), 50);
 });
 $('pinCancel').addEventListener('click', () => $('pinModal').classList.add('hidden'));
-$('pinForm').addEventListener('submit', e => {
+async function pinHash(p){
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('star-lpg-karachi:' + p));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+$('pinForm').addEventListener('submit', async e => {
   e.preventDefault();
-  if ($('pinInput').value === STAFF_PIN) { store.set('slStaff', '1'); $('pinModal').classList.add('hidden'); openStaff(); }
+  if (await pinHash($('pinInput').value) === STAFF_PIN_HASH) { store.set('slStaff', '1'); $('pinModal').classList.add('hidden'); openStaff(); }
   else { $('pinErr').style.display = 'block'; $('pinInput').value = ''; }
 });
 $('logoutBtn').addEventListener('click', () => { store.del('slStaff'); closeStaff(); });
